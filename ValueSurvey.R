@@ -879,15 +879,8 @@ arc.strength(avg.bootD, data = DScat, criterion = "bic")
 
 ## Create RT dataframe 
 
-# All data
-#RTdf<-data[,c("RT_care","EnvRisk_RT","SocRisk_RT","RT_ExtLH","NEPSc","RT_knowENV","RT_Beauty","RT_Mystical","RT_Importance","RT_Abundance","RT_Exciting","RT_Inviting","RT_Relaxing","RT_Calm","RT_knowHA")] 
-
-#Selected parameters form the theoretical framework
+#Selected parameters from the theoretical framework
 RTdf<-df[,c("RT_care","EnvRisk_RT","SocRisk_RT","RT_ExtLH","NEPSc","RT_knowENV","RT_symb","RT_knowHA", "BioV", "AltV", "EgoV", "HedV")]
-
-# Framework with ind symb values
-
-#RTdf<-df[,c("RT_care","EnvRisk_RT","SocRisk_RT","RT_ExtLH","NEPSc","RT_knowENV","RT_knowHA", "BioV", "AltV", "EgoV", "HedV","RT_Beauty", "RT_Mystical", "RT_Importance", "RT_Abundance", "RT_Exciting", "RT_Inviting", "RT_Relaxing", "RT_Calm")]
 
 # Transform data to categorical
 RTcat<-na.omit(RTdf)
@@ -1118,11 +1111,6 @@ ci.test("EnvRisk_Ant","Ant_care", test = "mi", data = Antcat)
 ci.test("EnvRisk_Ant","NEPSc","Ant_symb", "Ant_ExtLH", test = "x2", data = Antcat)
 ci.test("EnvRisk_Ant","NEPSc","Ant_symb", test = "x2", data = Antcat)
 
-## OR test arc strength (better?)
-
-arc.strength(dagAnt, data = Antcat, criterion = "x2")
-
-arc.strength(dagL, data = Antcat, criterion = "bic")
 
 # NETWORK SCORES
 
@@ -1137,8 +1125,5 @@ querygrain(junction, nodes = "SocRisk_Ant")$SocRisk_Ant #Probability distrbution
 jres <- setEvidence(junction, nodes = "EnvRisk_Ant", states = "1")# setting evidence
 querygrain(jres, "SocRisk_Ant")$SocRisk_Ant # check possible changes in the node of interest
 
-## Generate random samples from data
-
-rbn(dagL, n = 10) # not working currently
 
 

@@ -22,45 +22,14 @@ source("http://bioconductor.org/biocLite.R")
 biocLite(c("graph", "RBGL", "Rgraphviz"))
 
 
-## Note on data analysis
-## Analysis of answers with middle score 4 for symbolic value scales was tested in 3 ways:
-## 1) Answers analysed with assumed 4 added where NA in an otherwise complete answer
-
-## 2) Leave results as such, keep 4s that have been answered, don't fill in
-
-## 3) Remove ALL answers with 4s ?? last option, check Ingrids' mail
-
-## HUOM! check how many empty 4 score there are
-
-#data<- read.table("/Users/Laura/Documents/Laura/Research/Seabed values/results-survey_final.txt", header=TRUE,fill=TRUE, sep='\t')
-
-# with 4s added
-
-data1<- read.table("\\\\ad.helsinki.fi/home/l/lmkaikko/Documents/PhD tutkimus/Paper V - Values in marine resource use/Results/FINALresults_added_4s.txt", header=TRUE,fill=TRUE, sep='\t')
-
-
-#data<- read.table("\\\\ad.helsinki.fi/home/l/lmkaikko/Documents/PhD tutkimus/Paper V - Values in marine resource use/results-survey_prelim_new.txt", header=TRUE,fill=TRUE, sep='\t')
-
-# no 4s added
-
-#data<- read.table("\\\\ad.helsinki.fi/home/l/lmkaikko/Documents/PhD tutkimus/Paper V - Values in marine resource use/Results/FINALresults_noadditions.txt", header=TRUE,fill=TRUE, sep='\t')
-
+data1<- read.table("\FINALresults_added_4s.txt", header=TRUE,fill=TRUE, sep='\t')
 
 
 ## Prune & subset data
 
 df <- data1[,4:99]
-
 PVQ<-df[,65:81]
-
 NEP<-df[,82:96]
-
-
-### CHECK RESULTS
-
-counts <- table(data1$Country)
-write.table(counts, file = "\\\\ad.helsinki.fi/home/l/lmkaikko/Documents/Countries.txt", sep = "\t",
-            row.names = TRUE, quote=FALSE, col.names = NA)
 
 # NEP score
 
@@ -96,14 +65,12 @@ df$Ant_symb<-rowMeans(df[,c("Ant_Beauty", "Ant_Mystical", "Ant_Importance", "Ant
 df$RT_symb<-rowMeans(df[,c("RT_Beauty", "RT_Mystical", "RT_Importance", "RT_Abundance", "RT_Exciting", "RT_Inviting", "RT_Relaxing", "RT_Calm")])
 df$Mo_symb<-rowMeans(df[,c("Mo_Beauty", "Mo_Mystical", "Mo_Importance", "Mo_Abundance", "Mo_Exciting", "Mo_Inviting", "Mo_Relaxing", "Mo_Calm")])
 
-
 # Mean scores for environments
 
 mean(df$DS_symb, na.rm=TRUE)
 mean(df$Ant_symb, na.rm=TRUE)
 mean(df$RT_symb, na.rm=TRUE)
 mean(df$Mo_symb, na.rm=TRUE)
-
 
 ########################################
 ## EFFECT OF DEMOGRAPHICS ON THE RESPOSES 
@@ -120,32 +87,31 @@ meandf$mknowe<-rowMeans(df[,c("DS_knowENV","Ant_knowENV", "RT_knowENV", "Mo_know
 meandf$mknowh<-rowMeans(df[,c("DS_knowHA","Ant_knowHA", "RT_knowHA", "Mo_knowHA")])
 
 # Test differences between means of multiple groups with a non-parametric test
-kruskal.test(msymb~Age,data=meandf)
-kruskal.test(msymb~Gender,data=meandf) 
-kruskal.test(msymb~Education,data=meandf)
+            kruskal.test(msymb~Age,data=meandf)
+            kruskal.test(msymb~Gender,data=meandf) 
+            kruskal.test(msymb~Education,data=meandf)
 
-kruskal.test(mcare~Age,data=meandf)
-kruskal.test(mcare~Gender,data=meandf) 
-kruskal.test(mcare~Education,data=meandf)
+            kruskal.test(mcare~Age,data=meandf)
+            kruskal.test(mcare~Gender,data=meandf) 
+            kruskal.test(mcare~Education,data=meandf)
 
-kruskal.test(merisk~Age,data=meandf)
-kruskal.test(merisk~Gender,data=meandf) 
-kruskal.test(merisk~Education,data=meandf)
+            kruskal.test(merisk~Age,data=meandf)
+            kruskal.test(merisk~Gender,data=meandf) 
+            kruskal.test(merisk~Education,data=meandf)
 
-kruskal.test(mknowe~Age,data=meandf)
-kruskal.test(mknowe~Gender,data=meandf) 
-kruskal.test(mknowe~Education,data=meandf)
+            kruskal.test(mknowe~Age,data=meandf)
+            kruskal.test(mknowe~Gender,data=meandf) 
+            kruskal.test(mknowe~Education,data=meandf)
 
-kruskal.test(mknowh~Age,data=meandf)
-kruskal.test(mknowh~Gender,data=meandf) 
-kruskal.test(mknowh~Education,data=meandf)
+            kruskal.test(mknowh~Age,data=meandf)
+            kruskal.test(mknowh~Gender,data=meandf) 
+            kruskal.test(mknowh~Education,data=meandf)
 
 #########################################
 #### DIFFERENCES BETWEEN ENVIRONMENTS ###
 #########################################
 
 # Mann-Whitney U test for checking statistical significance between distributions
-
 
 library(plyr)
 
@@ -165,8 +131,6 @@ MWcombo<-adply(combos, 2, function(x) {
   
   return(out)
 }) 
-
-write.table(MWcombo, "\\\\ad.helsinki.fi/home/l/lmkaikko/Documents/PhD tutkimus/MannWhitneyU_finaldata_new.txt", sep="\t") 
 
 
 # test for siginificant difference between symbolic scores
@@ -215,14 +179,14 @@ boxplot(Value ~ Group, data = symb, ylab="Symbolic value score", xlab="Environme
 
 ## Deep sea values 5:12
 
-ds1<-ggplot(df, aes(x=df[,5]))+ xlab("Ugly-Beautiful")+geom_histogram(fill="navy")+theme_bw()
-ds2<-ggplot(df, aes(x=df[,6]))+ xlab("Ordinary-Mystical")+geom_histogram(fill="navy")+theme_bw()
-ds3<-ggplot(df, aes(x=df[,7]))+ xlab("Insignificant-Important ")+geom_histogram(fill="navy")+theme_bw()
-ds4<-ggplot(df, aes(x=df[,8]))+ xlab(" Empty - Abundant ")+geom_histogram(fill="navy")+theme_bw()
-ds5<-ggplot(df, aes(x=df[,9]))+ xlab(" Boring -Exciting")+geom_histogram(fill="navy")+theme_bw()
-ds6<-ggplot(df, aes(x=df[,10]))+ xlab(" Repelling-Inviting")+geom_histogram(fill="navy")+theme_bw()
-ds7<-ggplot(df, aes(x=df[,11]))+ xlab("Scary-Relaxing")+geom_histogram(fill="navy")+theme_bw()
-ds8<-ggplot(df, aes(x=df[,12]))+ xlab("Stressful-Calm")+geom_histogram(fill="navy")+theme_bw()
+            ds1<-ggplot(df, aes(x=df[,5]))+ xlab("Ugly-Beautiful")+geom_histogram(fill="navy")+theme_bw()
+            ds2<-ggplot(df, aes(x=df[,6]))+ xlab("Ordinary-Mystical")+geom_histogram(fill="navy")+theme_bw()
+            ds3<-ggplot(df, aes(x=df[,7]))+ xlab("Insignificant-Important ")+geom_histogram(fill="navy")+theme_bw()
+            ds4<-ggplot(df, aes(x=df[,8]))+ xlab(" Empty - Abundant ")+geom_histogram(fill="navy")+theme_bw()
+            ds5<-ggplot(df, aes(x=df[,9]))+ xlab(" Boring -Exciting")+geom_histogram(fill="navy")+theme_bw()
+            ds6<-ggplot(df, aes(x=df[,10]))+ xlab(" Repelling-Inviting")+geom_histogram(fill="navy")+theme_bw()
+            ds7<-ggplot(df, aes(x=df[,11]))+ xlab("Scary-Relaxing")+geom_histogram(fill="navy")+theme_bw()
+            ds8<-ggplot(df, aes(x=df[,12]))+ xlab("Stressful-Calm")+geom_histogram(fill="navy")+theme_bw()
 
 png("DeepseaValues_prelim.png")
 DS<-grid.arrange(ds1,ds2,
@@ -238,14 +202,14 @@ dev.off()
 
 ## Antarctica values  16:23
 
-an1<-ggplot(df, aes(x=df[,16]))+ xlab("Ugly-Beautiful")+geom_histogram(fill="lightblue")+theme_bw()
-an2<-ggplot(df, aes(x=df[,17]))+ xlab("Ordinary-Mystical")+geom_histogram(fill="lightblue")+theme_bw()
-an3<-ggplot(df, aes(x=df[,18]))+ xlab("Insignificant-Important ")+geom_histogram(fill="lightblue")+theme_bw()
-an4<-ggplot(df, aes(x=df[,19]))+ xlab(" Empty - Abundant ")+geom_histogram(fill="lightblue")+theme_bw()
-an5<-ggplot(df, aes(x=df[,20]))+ xlab(" Boring -Exciting")+geom_histogram(fill="lightblue")+theme_bw()
-an6<-ggplot(df, aes(x=df[,21]))+ xlab(" Repelling-Inviting")+geom_histogram(fill="lightblue")+theme_bw()
-an7<-ggplot(df, aes(x=df[,22]))+ xlab("Scary-Relaxing")+geom_histogram(fill="lightblue")+theme_bw()
-an8<-ggplot(df, aes(x=df[,23]))+ xlab("Stressful-Calm")+geom_histogram(fill="lightblue")+theme_bw()
+            an1<-ggplot(df, aes(x=df[,16]))+ xlab("Ugly-Beautiful")+geom_histogram(fill="lightblue")+theme_bw()
+            an2<-ggplot(df, aes(x=df[,17]))+ xlab("Ordinary-Mystical")+geom_histogram(fill="lightblue")+theme_bw()
+            an3<-ggplot(df, aes(x=df[,18]))+ xlab("Insignificant-Important ")+geom_histogram(fill="lightblue")+theme_bw()
+            an4<-ggplot(df, aes(x=df[,19]))+ xlab(" Empty - Abundant ")+geom_histogram(fill="lightblue")+theme_bw()
+            an5<-ggplot(df, aes(x=df[,20]))+ xlab(" Boring -Exciting")+geom_histogram(fill="lightblue")+theme_bw()
+            an6<-ggplot(df, aes(x=df[,21]))+ xlab(" Repelling-Inviting")+geom_histogram(fill="lightblue")+theme_bw()
+            an7<-ggplot(df, aes(x=df[,22]))+ xlab("Scary-Relaxing")+geom_histogram(fill="lightblue")+theme_bw()
+            an8<-ggplot(df, aes(x=df[,23]))+ xlab("Stressful-Calm")+geom_histogram(fill="lightblue")+theme_bw()
 
 Ant<-grid.arrange(an1,
 an2,
@@ -259,14 +223,14 @@ an8,nrow=2, top="Antarctica")
 
 ## Remote terrestrial values 27:34
 
-RT1<-ggplot(df, aes(x=df[,27]))+ xlab("Ugly-Beautiful")+geom_histogram(fill="forestgreen")+theme_bw()
-RT2<-ggplot(df, aes(x=df[,28]))+ xlab("Ordinary-Mystical")+geom_histogram(fill="forestgreen")+theme_bw()
-RT3<-ggplot(df, aes(x=df[,29]))+ xlab("Insignificant-Important ")+geom_histogram(fill="forestgreen")+theme_bw()
-RT4<-ggplot(df, aes(x=df[,30]))+ xlab(" Empty - Abundant ")+geom_histogram(fill="forestgreen")+theme_bw()
-RT5<-ggplot(df, aes(x=df[,31]))+ xlab(" Boring -Exciting")+geom_histogram(fill="forestgreen")+theme_bw()
-RT6<-ggplot(df, aes(x=df[,32]))+ xlab(" Repelling-Inviting")+geom_histogram(fill="forestgreen")+theme_bw()
-RT7<-ggplot(df, aes(x=df[,33]))+ xlab("Scary-Relaxing")+geom_histogram(fill="forestgreen")+theme_bw()
-RT8<-ggplot(df, aes(x=df[,34]))+ xlab("Stressful-Calm")+geom_histogram(fill="forestgreen")+theme_bw()
+            RT1<-ggplot(df, aes(x=df[,27]))+ xlab("Ugly-Beautiful")+geom_histogram(fill="forestgreen")+theme_bw()
+            RT2<-ggplot(df, aes(x=df[,28]))+ xlab("Ordinary-Mystical")+geom_histogram(fill="forestgreen")+theme_bw()
+            RT3<-ggplot(df, aes(x=df[,29]))+ xlab("Insignificant-Important ")+geom_histogram(fill="forestgreen")+theme_bw()
+            RT4<-ggplot(df, aes(x=df[,30]))+ xlab(" Empty - Abundant ")+geom_histogram(fill="forestgreen")+theme_bw()
+            RT5<-ggplot(df, aes(x=df[,31]))+ xlab(" Boring -Exciting")+geom_histogram(fill="forestgreen")+theme_bw()
+            RT6<-ggplot(df, aes(x=df[,32]))+ xlab(" Repelling-Inviting")+geom_histogram(fill="forestgreen")+theme_bw()
+            RT7<-ggplot(df, aes(x=df[,33]))+ xlab("Scary-Relaxing")+geom_histogram(fill="forestgreen")+theme_bw()
+            RT8<-ggplot(df, aes(x=df[,34]))+ xlab("Stressful-Calm")+geom_histogram(fill="forestgreen")+theme_bw()
 
 RT<-grid.arrange(RT1,
 RT2,
@@ -280,14 +244,14 @@ RT8, nrow=2, top="Remote terrestrial environments")
 
 # Moon values
 
-Mo1<-ggplot(df, aes(x=df[,38]))+ xlab("Ugly-Beautiful")+geom_histogram(fill="darkorange")+theme_bw()
-Mo2<-ggplot(df, aes(x=df[,39]))+ xlab("Ordinary-Mystical")+geom_histogram(fill="darkorange")+theme_bw()
-Mo3<-ggplot(df, aes(x=df[,40]))+ xlab("Insignificant-Important ")+geom_histogram(fill="darkorange")+theme_bw()
-Mo4<-ggplot(df, aes(x=df[,41]))+ xlab(" Empty - Abundant ")+geom_histogram(fill="darkorange")+theme_bw()
-Mo5<-ggplot(df, aes(x=df[,42]))+ xlab(" Boring -Exciting")+geom_histogram(fill="darkorange")+theme_bw()
-Mo6<-ggplot(df, aes(x=df[,43]))+ xlab(" Repelling-Inviting")+geom_histogram(fill="darkorange")+theme_bw()
-Mo7<-ggplot(df, aes(x=df[,44]))+ xlab("Scary-Relaxing")+geom_histogram(fill="darkorange")+theme_bw()
-Mo8<-ggplot(df, aes(x=df[,45]))+ xlab("Stressful-Calm")+geom_histogram(fill="darkorange")+theme_bw()
+            Mo1<-ggplot(df, aes(x=df[,38]))+ xlab("Ugly-Beautiful")+geom_histogram(fill="darkorange")+theme_bw()
+            Mo2<-ggplot(df, aes(x=df[,39]))+ xlab("Ordinary-Mystical")+geom_histogram(fill="darkorange")+theme_bw()
+            Mo3<-ggplot(df, aes(x=df[,40]))+ xlab("Insignificant-Important ")+geom_histogram(fill="darkorange")+theme_bw()
+            Mo4<-ggplot(df, aes(x=df[,41]))+ xlab(" Empty - Abundant ")+geom_histogram(fill="darkorange")+theme_bw()
+            Mo5<-ggplot(df, aes(x=df[,42]))+ xlab(" Boring -Exciting")+geom_histogram(fill="darkorange")+theme_bw()
+            Mo6<-ggplot(df, aes(x=df[,43]))+ xlab(" Repelling-Inviting")+geom_histogram(fill="darkorange")+theme_bw()
+            Mo7<-ggplot(df, aes(x=df[,44]))+ xlab("Scary-Relaxing")+geom_histogram(fill="darkorange")+theme_bw()
+            Mo8<-ggplot(df, aes(x=df[,45]))+ xlab("Stressful-Calm")+geom_histogram(fill="darkorange")+theme_bw()
 
 Mo<-grid.arrange(Mo1,
 Mo2,
@@ -340,7 +304,6 @@ ggplot(symbdf, aes(value, fill=variable), alpha=0.8, lty="blank")+
 library(ggridges)# control overlap w scale, transparency w alpha
 
 symbv<-
-  
   ggplot(symbdf, aes(x = value, y = variable))+
   stat_density_ridges(aes(fill = variable), size=0.05, quantile_lines = FALSE,alpha=0.8, lty="blank") +
   xlab("Symbolic value score")+
@@ -350,50 +313,6 @@ symbv<-
   scale_y_discrete(labels = c("Moon","Remote Terrestrial","Antarctica","Deep Sea"))+
   ylab("")+
 theme(plot.title = element_text(hjust = 0.5),legend.position="none", panel.background = element_blank())
-
-# ,axis.title.x=element_blank()
-#geom_density_ridges(aes(fill = variable), alpha=0.8, scale=1.2,lty="blank") +
-
-# testing
-ggplot(symbdf, aes(x = value, y = variable))+
-  geom_density_ridges(aes(fill = variable), alpha=0.8, scale=1.2,lty="blank") +
-stat_density_ridges(aes(fill = variable),
-  geom = "density_ridges_gradient", calc_ecdf = TRUE,
-  quantiles = 2, quantile_lines = TRUE
-) +
-  theme_ridges()+
-  scale_fill_manual(values = c("#00AFBB", "lightblue", "forestgreen","darkorange" ))
-  
-# Colous by quantiles
-ggplot(symbdf, aes(x= value, y=variable, fill = factor(stat(quantile)))) +
-  stat_density_ridges(
-    geom = "density_ridges_gradient", calc_ecdf = TRUE,
-    quantiles = 4, quantile_lines = TRUE
-  ) +
-  scale_fill_viridis_d(name = "Quartiles")
-
-
-#theme(plot.title = element_text(hjust = 0.8), panel.background = element_blank(), panel.grid.major = element_blank())+
-
-# Cumulative plots
-
-# Symbolic values
-ggplot(symbdf, aes(value, fill=variable))+
-geom_histogram(aes(y=cumsum(..count..)))+
-theme_bw()
-
-# CDF
-ggplot(symbdf, aes(value, fill=variable)) + 
-  stat_ecdf(aes(colour=variable),size = 0.8)+
-  theme_bw()+
-  theme(legend.title=element_blank())+
-  theme(legend.spacing.y=unit(0.2,"cm"))+
-  ggtitle("Mean score of symbolic values for different environments")+
-  scale_colour_manual(values = c("navy",
-                               "lightblue",
-                               "forestgreen",
-                               "darkorange"),labels = c("Deep sea","Antarctica","Remote terrestrial", "Moon"))+
-  theme(plot.title = element_text(hjust = 0.5),axis.title.x=element_blank(),legend.position=c(0.11, 0.89), panel.background = element_blank(), panel.grid.major = element_blank(), panel.grid.minor = element_blank())
 
 
 ### ATTITUDES TO EXTRACTION
@@ -415,88 +334,6 @@ ggplot(caredf, aes(value, fill=variable))+
                                "darkorange"),labels = c("Deep sea","Antarctica","Remote terrestrial", "Moon"))+
   theme(legend.text=element_text(size=10))+
   theme(plot.title = element_text(hjust = 0.5),axis.title.x=element_blank(),legend.position=c(0.1, 0.9), panel.background = element_blank(), panel.grid.major = element_blank(), panel.grid.minor = element_blank())
-
-# Distribution plot by groups as a histogram
-
-library(ggridges)
-
-care<-caredf %>%
-  ggplot( aes(y=variable, x=value,  fill=variable, lty="blank")) +
-  geom_density_ridges(alpha=0.8, stat="binline", bins=15, scale=0.9,lty="blank") +
-  theme_ridges() +
-  theme(
-    legend.position="none",
-    panel.spacing = unit(1.5, "lines"),
-    strip.text.x = element_text(size = 8),
-    text=element_text(size=12,  family="Arial")
-  ) +
-
-  scale_fill_manual(values = c("navy",
-                               "lightblue",
-                               "forestgreen",
-                               "darkorange"),labels = c("Deep sea","Antarctica","Remote terrestrial", "Moon"))+
-  scale_y_discrete(labels = c("Deep sea","Antarctica","Remote terrestrial", "Moon"))+
-  xlab("Care for the environment") +
-  theme(text=element_text(family="Lato",size=12))+
-   ylab("")
-
-#scale_x_discrete(labels = c("1 Not at all","2","3", "4","5 Very much"))+
-
-#scale_fill_viridis_d()+
-
-# Cumulative plots
-
-ggplot(caredf, aes(value, fill=variable))+
-  geom_histogram(position = "dodge",aes(y=cumsum(..count..)))+
-  theme_bw()
-
-
-ggdata <- ddply(caredf, .(variable), transform, ecd=ecdf(value)(value))
-
-ggplot(caredf, aes(value, fill=variable)) + 
-  stat_ecdf(aes(colour=variable),size = 0.8)+
-  theme_bw()+
-  theme(legend.title=element_blank())+
-  theme(legend.spacing.y=unit(0.2,"cm"))+
-  ggtitle("Care for different environments")+
-  scale_colour_manual(values = c("navy",
-                                 "lightblue",
-                                 "forestgreen",
-                                 "darkorange"),labels = c("Deep sea","Antarctica","Remote terrestrial", "Moon"))+
-  theme(plot.title = element_text(hjust = 0.5),axis.title.x=element_blank(),legend.position=c(0.11, 0.89), panel.background = element_blank(), panel.grid.major = element_blank(), panel.grid.minor = element_blank())
-
-
-# Perception of environmental risk
-envriskdf<- melt(data[,c("EnvRisk_DS","EnvRisk_Ant", "EnvRisk_RT", "EnvRisk_Mo")])
-
-ggplot(envriskdf, aes(value, fill=variable))+ 
-  geom_bar(position = "dodge")+
-  theme_bw()+
-  theme(legend.title=element_blank())+
-  theme(legend.spacing.y=unit(0.2,"cm"))+
-  theme(legend.key.size = unit(1, 'lines'))+
-  ggtitle("Perception of environmental risk of mineral extraction")+
-  scale_fill_manual(values = c("navy",
-                               "lightblue",
-                               "forestgreen",
-                               "darkorange"),labels = c("Deep sea","Antarctica","Remote terrestrial", "Moon"))+
-  theme(legend.text=element_text(size=10))+
-  theme(plot.title = element_text(hjust = 0.5),axis.title.x=element_blank(),legend.position=c(0.1, 0.9), panel.background = element_blank(), panel.grid.major = element_blank(), panel.grid.minor = element_blank())
-
-### Cumplot
-
-ggplot(envriskdf, aes(value, fill=variable)) + 
-  stat_ecdf(aes(colour=variable),size = 0.8)+
-  theme_bw()+
-  theme(legend.title=element_blank())+
-  theme(legend.spacing.y=unit(0.2,"cm"))+
-  ggtitle("Perception of environmental risk of mineral extraction")+
-  scale_colour_manual(values = c("navy",
-                                 "lightblue",
-                                 "forestgreen",
-                                 "darkorange"),labels = c("Deep sea","Antarctica","Remote terrestrial", "Moon"))+
-  theme(plot.title = element_text(hjust = 0.5),axis.title.x=element_blank(),legend.position=c(0.11, 0.89), panel.background = element_blank(), panel.grid.major = element_blank(), panel.grid.minor = element_blank())
-
 
 
 ## Histograms as ridgeplot
@@ -522,24 +359,6 @@ envrisk<-envriskdf %>%
   ylab("")
 
 
-# Perception of societal risk
-socriskdf<- melt(data[,c("SocRisk_DS","SocRisk_Ant", "SocRisk_RT", "SocRisk_Mo")])
-
-xticks<-c("1 Not at all risky", "2", "3", "4", "Very risky")
-
-ggplot(socriskdf, aes(value, fill=variable))+ 
-  geom_bar(position = "dodge")+
-  theme_bw()+
-  theme(legend.title=element_blank())+
-  theme(legend.spacing.y=unit(0.2,"cm"))+
-  theme(legend.key.size = unit(1, 'lines'))+
-  ggtitle("Perception of societal risk of mineral extraction")+
-  scale_fill_manual(values = c("navy",
-                               "lightblue",
-                               "forestgreen",
-                               "darkorange"),labels = c("Deep sea","Antarctica","Remote terrestrial", "Moon"))+
-  theme(legend.text=element_text(size=10))+
-  theme(plot.title = element_text(hjust = 0.5),axis.title.x=element_blank(),legend.position=c(0.1, 0.9), panel.background = element_blank(), panel.grid.major = element_blank(), panel.grid.minor = element_blank())
 
 # Cumulative plot
 
@@ -577,16 +396,6 @@ socrisk<-socriskdf %>%
   theme(text=element_text(family="Lato",size=12))+
   ylab("")
 
-## SAVING GRID PLOTS
-
-
-png("Combinedperceptionplot.png")
-DS<-grid.arrange(symbv,envrisk,
-                 socrisk,
-                 care,nrow=2)
-
-dev.off()
-
 ######################
 ### DATA ANALYSIS ####
 ######################
@@ -601,11 +410,9 @@ prop.table(table(df$NEPSc, df$DS_care))
 prop.table(table(data$BioV, data$DS_care))
 
 
-
 ## CHECKING PROPORTIONS for contingency tables
 
 prop.table(table(df$Country))
-
 
 ### CHI SQUARE TEST ####
 
@@ -634,7 +441,6 @@ write.table(chicombo, "\\\\ad.helsinki.fi/home/l/lmkaikko/Documents/chicombo_fin
 
 # ## Loop SPEARMAN&kendall CORRELATION for all combinations of variables
 
-
 data2<-df[,c(3:length(df))]
 data1<-data2[ ,!(colnames(data2) %in% c("LivingArea","Education","Country", "Gender","Age"))]
 
@@ -655,7 +461,6 @@ corcombo<-adply(combos, 2, function(x) {
 write.table(corcombo, "\\\\ad.helsinki.fi/home/l/lmkaikko/Documents/PhD tutkimus/corcombo_finaldata_kendall.txt", sep="\t") 
 
 ## ## Loop PEARSON CORRELATION for all combinations of variables
-
 
 data2<-df[,c(3:length(df))]
 data1<-data2[ ,!(colnames(data2) %in% c("LivingArea","Education","Country", "Gender","Age"))]
@@ -689,20 +494,9 @@ data<-na.omit(df)
 
 ## Create antarctic dataframe 
 
-# All data
-#Antdf<-data[,c("Ant_care","EnvRisk_Ant","SocRisk_Ant","Ant_ExtLH","NEPSc","Ant_knowENV","Ant_Beauty","Ant_Mystical","Ant_Importance","Ant_Abundance","Ant_Exciting","Ant_Inviting","Ant_Relaxing","Ant_Calm","Ant_knowHA")] 
-
-# Framework with ind symb values
-
-#Antdf<-df[,c("Ant_care","EnvRisk_Ant","SocRisk_Ant","Ant_ExtLH","NEPSc","Ant_knowENV","Ant_knowHA", "BioV", "AltV", "EgoV", "HedV","Ant_Beauty", "Ant_Mystical", "Ant_Importance", "Ant_Abundance", "Ant_Exciting", "Ant_Inviting", "Ant_Relaxing", "Ant_Calm")]
-
-
-#Selected parameters form the theoretical framework
+#Selected parameters from the theoretical framework
 Antdf<-df[,c("Ant_care","EnvRisk_Ant","SocRisk_Ant","Ant_ExtLH","NEPSc","Ant_knowENV","Ant_symb","Ant_knowHA", "BioV", "AltV", "EgoV", "HedV")]
-
-
-# Transform data to categorical
-Antcat<-na.omit(Antdf)
+Antcat<-na.omit(Antdf)# Transform data to categorical
 
 # Discretise symbolic value and NEP scores
 
@@ -718,7 +512,6 @@ if (Antcat$NEPSc[i]<2.1){
 }
 }
 
-
 for (i in 1:(length(Antcat$Ant_symb))){
   if (Antcat$Ant_symb[i]< 0){
     Antcat$Ant_symb[i]="Negative"
@@ -731,14 +524,10 @@ for (i in 1:(length(Antcat$Ant_symb))){
   }
 }
 
-
 Antcat[] <- lapply(Antcat, as.factor) #factorize for BN
-
 
 # learn BN
 dagL=hc(Antcat, score="bic", start = random.graph(names(Antcat)))#random start
-dagL = gs(Antcat, debug=TRUE) 
-dagL = inter.iamb(Antcat)
 
 dagAnt2<-mmhc(Antcat)
 
@@ -783,27 +572,13 @@ viewer(dagL,
        bayesianNetwork.footer = "Fig. 1 - Layout with Sugiyama"
 )
 
-
-
-
 ## DS BN ###
 
 ## Create Deep sea dataframe 
 
-# All data
-#DSdf<-data[,c("DS_care","EnvRisk_DS","SocRisk_DS","DS_ExtLH","NEPSc","DS_knowENV","DS_Beauty","DS_Mystical","DS_Importance","DS_Abundance","DS_Exciting","DS_Inviting","DS_Relaxing","DS_Calm","DS_knowHA")] 
-
 #Selected parameters form the theoretical framework
-#DSdf<-df[,c("Age", "Gender", "Education","DS_care","EnvRisk_DS","SocRisk_DS","DS_ExtLH","NEPSc","DS_knowENV","DS_symb","DS_knowHA", "BioV", "AltV", "EgoV", "HedV")]
 DSdf<-df[,c("DS_care","EnvRisk_DS","SocRisk_DS","DS_ExtLH","NEPSc","DS_knowENV","DS_symb","DS_knowHA", "BioV", "AltV", "EgoV", "HedV")]
-
-# Framework with ind symb values
-
-#DSdf<-df[,c("DS_care","EnvRisk_DS","SocRisk_DS","DS_ExtLH","NEPSc","DS_knowENV","DS_knowHA", "BioV", "AltV", "EgoV", "HedV","DS_Beauty", "DS_Mystical", "DS_Importance", "DS_Abundance", "DS_Exciting", "DS_Inviting", "DS_Relaxing", "DS_Calm")]
-
-
-# Transform data to categorical
-DScat<-na.omit(DSdf)
+DScat<-na.omit(DSdf)# Transform data to categorical
 
 # modify symbolic value and NEP scores
 
@@ -881,9 +656,7 @@ arc.strength(avg.bootD, data = DScat, criterion = "bic")
 
 #Selected parameters from the theoretical framework
 RTdf<-df[,c("RT_care","EnvRisk_RT","SocRisk_RT","RT_ExtLH","NEPSc","RT_knowENV","RT_symb","RT_knowHA", "BioV", "AltV", "EgoV", "HedV")]
-
-# Transform data to categorical
-RTcat<-na.omit(RTdf)
+RTcat<-na.omit(RTdf)# Transform data to categorical
 
 # modify symbolic value and NEP scores
 
@@ -959,19 +732,9 @@ arc.strength(avg.bootR, data = RTcat, criterion = "bic")
 ## Moon BN ###
 
 ## Create Moon dataframe 
-
-# All data
-#Modf<-data[,c("Mo_care","EnvRisk_Mo","SocRisk_Mo","Mo_ExtLH","NEPSc","Mo_knowENV","Mo_Beauty","Mo_Mystical","Mo_ImpoMoance","Mo_Abundance","Mo_Exciting","Mo_Inviting","Mo_Relaxing","Mo_Calm","Mo_knowHA")] 
-
 #Selected parameters form the theoretical framework
 Modf<-df[,c("Mo_care","EnvRisk_Mo","SocRisk_Mo","Mo_ExtLH","NEPSc","Mo_knowENV","Mo_symb","Mo_knowHA", "BioV", "AltV", "EgoV", "HedV")]
-# Framework with ind symb values
-
-#Modf<-df[,c("Mo_care","EnvRisk_Mo","SocRisk_Mo","Mo_ExtLH","NEPSc","Mo_knowENV","Mo_knowHA", "BioV", "AltV", "EgoV", "HedV","Mo_Beauty", "Mo_Mystical", "Mo_Importance", "Mo_Abundance", "Mo_Exciting", "Mo_Inviting", "Mo_Relaxing", "Mo_Calm")]
-
-
-# Transform data to categorical
-Mocat<-na.omit(Modf)
+Mocat<-na.omit(Modf)# Transform data to categorical
 
 # modify symbolic value and NEP scores
 
@@ -1008,15 +771,12 @@ Mocat[] <- lapply(Mocat, as.factor) #factorize for BN
 dagMo = hc(Mocat) # learnt structure
 dagMo= hc(Mocat, score="bic", start = random.graph(names(Mocat)))
 
-
 dagMo2<-mmhc(Mocat)
 
 fitted = bn.fit(dagMo, data =Mocat)#learn CPTs
-
 plot(dagMo)
 
 score(dagMo, data = Mocat, type = "bic")
-
 arc.strength(dagMo, data = Mocat, criterion = "x2")
 
 ### Bootstrapping for consensus network
@@ -1039,17 +799,12 @@ avg.bootM <- averaged.network(bootM, threshold = 0.68) # CHECK inclusion thresho
 plot(avg.bootM)
 arc.strength(avg.boot, data = RTcat, criterion = "x2")# arc strength
 
-
-
 # check BIC score
 score(avg.bootM, data = Mocat, type = "bic")
 
 arc.strength(avg.bootM, data = Mocat, criterion = "bic")
 
-
-
 ### FURTHER BN STUFF TO PLAY WITH & ANALYTICS ####
-
 
 # Defined structure
 
@@ -1070,8 +825,6 @@ arc.set1 = matrix(c("NEPSc", "EnvRisk_Ant",
                  dimnames = list(NULL, c("from", "to")))
 
 arcs(dagAnt) = arc.set1
-
-
 
 ## Refined strcuture based on tests
 
@@ -1097,33 +850,5 @@ Rgraphviz::renderGraph(g)
 graphviz.plot(dagAnt)
 
 fitted = bn.fit(dagAnt, data =Antcat,method = "mle") # learning CPTs from data
-
-
-## Using the posterior probabilities
-
-bn.bayes <- bn.fit(dagAnt, data = dsf, method = "bayes",iss = 10)
-
-## Conditional independence testing
-
-ci.test("EnvRisk_Ant","Ant_symb", test = "mi", data = Antcat)
-ci.test("EnvRisk_Ant","Ant_care", test = "mi", data = Antcat)
-
-ci.test("EnvRisk_Ant","NEPSc","Ant_symb", "Ant_ExtLH", test = "x2", data = Antcat)
-ci.test("EnvRisk_Ant","NEPSc","Ant_symb", test = "x2", data = Antcat)
-
-
-# NETWORK SCORES
-
-score(dagAnt, data = Antcat, type = "bic")
-
-score(dagAnt2, data = Antcat, type = "bic")
-# Using the CPTS
-
-junction <- compile(as.grain(fitted))
-querygrain(junction, nodes = "SocRisk_Ant")$SocRisk_Ant #Probability distrbution of one node withing the BN
-
-jres <- setEvidence(junction, nodes = "EnvRisk_Ant", states = "1")# setting evidence
-querygrain(jres, "SocRisk_Ant")$SocRisk_Ant # check possible changes in the node of interest
-
 
 

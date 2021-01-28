@@ -1,4 +1,4 @@
-##### Scritps to accompany Kaikkonen & van Putten, 202X
+##### Script to accompany Kaikkonen & van Putten, 202X
 #### L. Kaikkonen, last edited 2020-12
 
 install.packages("psych")
@@ -21,7 +21,7 @@ source("http://bioconductor.org/biocLite.R")
 biocLite(c("graph", "RBGL", "Rgraphviz"))
 
 
-data1<- read.table("\FINALresults_added_4s.txt", header=TRUE,fill=TRUE, sep='\t')
+data1<- read.table("\DeepSeaValues_SurveyResults.txt", header=TRUE,fill=TRUE, sep='\t')
 
 
 ## Prune & subset data

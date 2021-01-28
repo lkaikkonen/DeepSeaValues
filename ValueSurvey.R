@@ -1,6 +1,5 @@
-##### VALUES FOR REMOTE ENVIRONMENTS ####
-
-#### Survey Results 2019-10 ####
+##### Scritps to accompany Kaikkonen & van Putten, 202X
+#### L. Kaikkonen, last edited 2020-12
 
 install.packages("psych")
 install.packages(c("foreign", "survey", "knitr"))
